@@ -1,17 +1,14 @@
 Package: gcvisualyst
-Title: What the Package Does (One Line, Title Case)
+Title: Check the DNA list easily with GCvisuaLyst
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("Adnan", "Raza", , "adnanraza3435@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: GCvisuaLyst aid in performing analysis on GC content of DNA sequences, including visualisation of GC content in a line graph for multiple sequence.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
-    dplyr,
-    ggplot2,
-    stringr,
-    tidyr
+    readr,
+    stringr
