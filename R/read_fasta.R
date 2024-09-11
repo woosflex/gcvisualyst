@@ -1,11 +1,25 @@
-#' Read FASTA files
+#' Read FASTA files and validate DNA sequences
 #'
-#' @param path Path to the FASTA file with DNA sequences
+#' This function reads a FASTA file containing DNA sequences and returns a data frame with the sequences.
+#' It also validates that the sequences only contain valid DNA nucleotides (A, T, G, C). If any non-DNA
+#' or ambiguous nucleotide characters are found, an error is raised.
 #'
-#' @return A data frame with sequences
+#' @param path A character string specifying the path to the FASTA file containing DNA sequences.
+#' The file should be in standard FASTA format.
+#'
+#' @return A data frame with a column `sequences` containing the DNA sequences and column `headers` containing FASTA headers read from the FASTA file.
+#' If the file contains any invalid or ambiguous nucleotide characters, the function will throw an error.
 #' @export
 #'
 #' @examples
+#' # Example usage:
+#' # Assuming `example.fasta` is a valid FASTA file located in your working directory
+#' fasta_path <- "example.fasta"
+#' sequences_df <- read_fasta(fasta_path)
+#'
+#' # View the sequences
+#' print(sequences_df)
+#'
 read_fasta <- function(path = NA) {
   sequences <- read_sequences(path)
   if(validate_sequences(sequences$sequences)) {
