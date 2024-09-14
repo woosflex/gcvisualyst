@@ -22,7 +22,7 @@ or ambiguous nucleotide characters are found, an error is raised.
 \examples{
 # Example usage:
 # Assuming `example.fasta` is a valid FASTA file located in your working directory
-fasta_path <- "example.fasta"
+fasta_path <- system.file("extdata", "example.fasta", package = "gcvisualyst")
 sequences_df <- read_fasta(fasta_path)
 
 # View the sequences

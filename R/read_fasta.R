@@ -14,7 +14,7 @@
 #' @examples
 #' # Example usage:
 #' # Assuming `example.fasta` is a valid FASTA file located in your working directory
-#' fasta_path <- "example.fasta"
+#' fasta_path <- system.file("extdata", "example.fasta", package = "gcvisualyst")
 #' sequences_df <- read_fasta(fasta_path)
 #'
 #' # View the sequences
@@ -22,7 +22,10 @@
 #'
 read_fasta <- function(path = NA) {
   sequences <- read_sequences(path)
-  if(validate_sequences(sequences$sequences)) {
+  if (nrow(sequences) == 0) {
+    stop("Provided FASTA file is empty.")
+  }
+  if (validate_sequences(sequences$sequences)) {
     stop("Non-DNA nucleotide or Ambigous nucleotide character present in sequence.")
   }
   return(sequences)

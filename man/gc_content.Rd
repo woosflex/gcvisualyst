@@ -3,9 +3,6 @@
 \name{gc_content}
 \alias{gc_content}
 \title{Calculate GC content of the DNA sequences across a sliding window}
-\usage{
-gc_content(sequences_df, window = 100)
-}
 \arguments{
 \item{sequences_df}{A data frame with the column named \code{sequences} that contains DNA sequences as strings.}
 
@@ -22,11 +19,12 @@ The GC content is computed for each window, and the results are stored in a new 
 }
 \examples{
 # Example Data Frame with DNA Sequences
-sequences_df <- tibble::tibble(
+sequences_df <- data.frame(
   sequences = c(
     "AGCTGCGCGTATCGTACGCGATCGTATCGCGATCGTATCGCG",
     "GGCGCGCTAGCTCGAGTCGCGCGGCTCGATAGCTCGTACGTAG"
-  )
+  ),
+  stringsAsFactors = FALSE  # Ensures strings are not converted to factors
 )
 
 # Calculate GC content with a sliding window size of 10

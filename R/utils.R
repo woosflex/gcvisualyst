@@ -17,7 +17,7 @@ read_sequences <-function(path) {
   )
   for (seq in file) {
     header_and_seq <- unlist(stringr::str_split(seq, "\n"), 2)
-    header <- header_and_seq[1]
+    header <- unlist(stringr::str_split(header_and_seq[1], ":"))[1]
     sequence <- stringr::str_to_upper(stringr::str_squish(header_and_seq[2]))
     sequence_df <- rbind(sequence_df, list(header, sequence))
   }
