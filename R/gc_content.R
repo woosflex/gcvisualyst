@@ -31,6 +31,9 @@
 #'
 utils::globalVariables("sequences")
 gc_content <- function(sequences_df, window = 100) {
+  if((!(is.numeric(window) && floor(window) == window)) || window < 1){
+    stop("Kindly provide whole number as window.")
+  }
   # To calculate GC content of a window
   gc_calculate <- function(sequence_window) {
     gc_count <- stringr::str_count(sequence_window, "[GC]")
