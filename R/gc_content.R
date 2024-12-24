@@ -46,7 +46,7 @@ gc_content <- function(sequences_df, window = 100) {
     sequence_length <- stringr::str_length(sequence)
 
     if (sequence_length < window) {
-      return(gc_calculate(sequence))
+      stop("Sequence are shorter than window size specified")
     }
 
     windows <- seq(1, sequence_length - window + 1, by = 1)
