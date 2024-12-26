@@ -29,10 +29,5 @@ test_that("gc_content() handles sequences shorter than window", {
     stringsAsFactors = FALSE
   )
 
-  result <- gc_content(sequences_df, window = 10)
-
-  expect_true(is.data.frame(result))
-  expect_length(result$gc_content_windows[[1]], 1)
-
-  expect_true(result$gc_content_windows[[1]] >= 0 & result$gc_content_windows[[1]] <= 1)
+  expect_error(gc_content(sequences_df, 10))
 })

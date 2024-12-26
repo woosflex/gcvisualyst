@@ -34,10 +34,16 @@ gc_content <- function(sequences_df, window = 100) {
   if((!(is.numeric(window) && floor(window) == window)) || window < 1){
     stop("Kindly provide whole number as window.")
   }
+
+  # Add headers if identifiers are not provided
+  if (!"headers" %in% colnames(sequences_df)) {
+    sequences_df$headers <- paste0("seq", seq_len(nrow(sequences_df)))
+  }
+
   # To calculate GC content of a window
   gc_calculate <- function(sequence_window) {
     gc_count <- stringr::str_count(sequence_window, "[GC]")
-    total_bases <- stringr::str_length((sequence_window))
+    total_bases <- stringr::str_length(sequence_window)
     return(gc_count / total_bases)
   }
 

@@ -3,7 +3,7 @@ Title: Check the DNA list easily with GCvisuaLyst
 Version: 0.1.0.9000
 Authors@R: 
     person("Adnan", "Raza", , "adnanraza3435@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0009-0006-6398-3747"))
 Description: GCvisuaLyst aid in performing analysis on GC content of DNA sequences, including visualisation of GC content in a line graph for multiple sequence.
 License: MIT + file LICENSE
 Video: https://youtu.be/pD_BdU5yKA0
