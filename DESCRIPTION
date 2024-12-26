@@ -1,6 +1,6 @@
 Package: gcvisualyst
 Title: Check the DNA list easily with GCvisuaLyst
-Version: 0.1.0.9000
+Version: 0.1.1.0
 Authors@R: 
     person("Adnan", "Raza", , "adnanraza3435@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0006-6398-3747"))
