@@ -27,7 +27,10 @@ Features:
   skew, and CpG islands for multiple sequences, either combined in a
   single plot or as separate facets for each sequence.
 - **Interactive Shiny App**: Launches a bundled web application with
-  `run_app()` to analyze and visualize your data in a browser.
+  `run_app()` to compute GC content, GC skew and CpG islands in your
+  browser, and export results.
+- **BED Export**: Writes detected CpG islands to a UCSC-compatible BED
+  track with `write_bed()` for downstream browser / pipeline use.
 - **Customizable Plots**: Provides options for combined or facet-wrapped
   layouts for easy comparison of multiple sequences.
 - **Efficient Processing**: Utilizes `dplyr`, `ggplot2`, `stringr`, and
@@ -106,6 +109,35 @@ gc_visualize(gc_content_df)
 
 <img src="man/figures/README-example_gc_individual-1.png" alt="" width="100%" />
 
+### Exporting CpG Islands to BED
+
+Detected CpG islands (from `cpg_islands()`) can be written to a
+UCSC-compatible BED file with `write_bed()`. gcvisualyst reports
+1-based, closed coordinates; `write_bed()` converts them to the 0-based,
+half-open coordinates BED expects (`chromStart = start - 1`,
+`chromEnd = end`) so the BED span matches the island length. A
+`track name=... type=bed` line is written first so the file can be
+uploaded directly to the UCSC Genome Browser:
+
+``` r
+library(gcvisualyst)
+
+# Demo sequences producing a ~600 bp CpG island
+sequences_df <- data.frame(
+  headers = "s1",
+  sequences = strrep("CG", 300),
+  stringsAsFactors = FALSE
+)
+
+islands <- cpg_islands(sequences_df, window = 100, min_length = 200)
+print(islands)
+#>   header start end length mean_gc
+#> 1     s1     1 600    600       1
+
+# Write a BED track (returns the path invisibly)
+write_bed(islands, path = tempfile(fileext = ".bed"))
+```
+
 ### Calculating GC Skew
 
 gcvisualyst can compute the GC skew `(G - C)/(G + C)` across sliding
@@ -137,8 +169,9 @@ gc_skew_visualize(skew_df)
 ### Launch the Shiny App
 
 gcvisualyst bundles an interactive Shiny web application that lets you
-enter DNA sequences or upload a FASTA file and visualize GC content in a
-browser. Launch it with `run_app()`:
+enter DNA sequences or upload a FASTA file, then computes and visualizes
+GC content, GC skew and CpG islands for the same input in a browser.
+Launch it with `run_app()`:
 
 ``` r
 library(gcvisualyst)
@@ -150,5 +183,11 @@ run_app()
 run_app(port = 3838, launch.browser = TRUE)
 ```
 
-The bundled app ships inside the package and is resolved via
+The extended app adds controls for the CpG island thresholds
+(`gc_threshold`, `cpg_threshold`, `min_length`) and a shared window
+size, shows GC content and GC skew side by side in tabs, displays the
+detected islands in a summary table, and includes CSV and BED download
+buttons for the island results. Errors (such as a window larger than a
+sequence) are surfaced as messages instead of crashing the app. The
+bundled app ships inside the package and is resolved via
 `system.file("shiny", package = "gcvisualyst")`.

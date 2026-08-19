@@ -8,6 +8,7 @@ export(gc_skew_visualize)
 export(gc_visualize)
 export(read_fasta)
 export(run_app)
+export(write_bed)
 importFrom(dplyr,filter)
 importFrom(ggplot2,
   facet_wrap,
