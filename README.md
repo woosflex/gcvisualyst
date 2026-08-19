@@ -4,23 +4,30 @@
 # gcvisualyst
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 The goal of gcvisualyst is to analyze and visualize the GC content of
 DNA sequences across sliding windows and detect CpG islands within these
 sequences. This tool provides a simple and effective way to calculate GC
-content, identify CpG islands, and generate informative plots
-illustrating variations in GC content and CpG islands.
+content, compute GC skew, identify CpG islands, and generate informative
+plots illustrating variations in GC content and CpG islands. It also
+ships an interactive Shiny web application.
 
 Features:
 
 - **GC Content Calculation**: Computes the GC content of DNA sequences
   across sliding windows of user-defined size.
+- **GC Skew Calculation**: Computes the GC skew (G - C)/(G + C) of DNA
+  sequences across sliding windows of user-defined size.
 - **CpG Island Detection**: Identifies regions with high GC content and
-  CpG dinucleotide enrichment based on customizable thresholds.
-- **Data Visualization**: Generates visualizations of GC content and CpG
-  islands for multiple sequences, either combined in a single plot or as
-  separate facets for each sequence.
+  CpG dinucleotide enrichment based on customizable thresholds, merging
+  adjacent windows into continuous islands.
+- **Data Visualization**: Generates visualizations of GC content, GC
+  skew, and CpG islands for multiple sequences, either combined in a
+  single plot or as separate facets for each sequence.
+- **Interactive Shiny App**: Launches a bundled web application with
+  `run_app()` to analyze and visualize your data in a browser.
 - **Customizable Plots**: Provides options for combined or facet-wrapped
   layouts for easy comparison of multiple sequences.
 - **Efficient Processing**: Utilizes `dplyr`, `ggplot2`, `stringr`, and
@@ -60,7 +67,7 @@ cpg_plot <- detect_cpg_islands(sequences_df, window = 10, gc_threshold = 0.5, cp
 print(cpg_plot)
 ```
 
-<img src="man/figures/README-example_cpg-1.png" width="100%" />
+<img src="man/figures/README-example_cpg-1.png" alt="" width="100%" />
 
 ### Visualizing GC Content
 
@@ -86,7 +93,7 @@ gc_content_df <- gc_content(sequences_df, window = 10)
 gc_visualize(gc_content_df, combined = TRUE)
 ```
 
-<img src="man/figures/README-example_gc-1.png" width="100%" />
+<img src="man/figures/README-example_gc-1.png" alt="" width="100%" />
 
 Alternatively, you can generate separate plots for all sequences by
 using the default `combined = FALSE` parameter of the `gc_visualize()`
@@ -97,4 +104,51 @@ function:
 gc_visualize(gc_content_df)
 ```
 
-<img src="man/figures/README-example_gc_individual-1.png" width="100%" />
+<img src="man/figures/README-example_gc_individual-1.png" alt="" width="100%" />
+
+### Calculating GC Skew
+
+gcvisualyst can compute the GC skew `(G - C)/(G + C)` across sliding
+windows of DNA sequences using the `gc_skew()` function, then visualize
+the results with `gc_skew_visualize()`:
+
+``` r
+library(gcvisualyst)
+
+# Demo DNA sequences
+sequences_df <- data.frame(
+  headers = c("seq1", "seq2"),
+  sequences = c(
+    "AGCTGCGCGTATCGTACGCGATCGTATCGCGATCGTATCGCG",
+    "GGCGCGCTAGCTCGAGTCGCGCGGCTCGATAGCTCGTACGTAG"
+  ),
+  stringsAsFactors = FALSE
+)
+
+# Calculate GC skew with a sliding window of 10
+skew_df <- gc_skew(sequences_df, window = 10)
+
+# Visualize GC skew (facets)
+gc_skew_visualize(skew_df)
+```
+
+<img src="man/figures/README-example_skew-1.png" alt="" width="100%" />
+
+### Launch the Shiny App
+
+gcvisualyst bundles an interactive Shiny web application that lets you
+enter DNA sequences or upload a FASTA file and visualize GC content in a
+browser. Launch it with `run_app()`:
+
+``` r
+library(gcvisualyst)
+
+# Launch the app on 127.0.0.1 at an automatically chosen port
+run_app()
+
+# Launch on a specific port and open a browser
+run_app(port = 3838, launch.browser = TRUE)
+```
+
+The bundled app ships inside the package and is resolved via
+`system.file("shiny", package = "gcvisualyst")`.

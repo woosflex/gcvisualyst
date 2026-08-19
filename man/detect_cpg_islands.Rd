@@ -2,31 +2,79 @@
 % Please edit documentation in R/detect_cpg_islands.R
 \name{detect_cpg_islands}
 \alias{detect_cpg_islands}
-\title{Detect CpG Islands in DNA Sequences}
+\alias{cpg_islands}
+\title{Detect or compute CpG Islands in DNA Sequences}
+\usage{
+cpg_islands(
+  sequences_df,
+  window = 100,
+  gc_threshold = 0.5,
+  cpg_threshold = 0.6,
+  min_length = 200
+)
+
+detect_cpg_islands(
+  sequences_df,
+  window = 100,
+  gc_threshold = 0.5,
+  cpg_threshold = 0.6,
+  min_length = 200,
+  return_type = c("plot", "table", "list")
+)
+}
 \arguments{
-\item{sequences_df}{A data frame containing the sequences to be analyzed. It must have a column named \code{sequences} containing the DNA sequences. Optionally, a \code{headers} column can be included for sequence identifiers.}
+\item{sequences_df}{A data frame containing the sequences to be analyzed. It
+must have a column named \code{sequences} containing the DNA sequences.
+Optionally, a \code{headers} column can be included for sequence identifiers.}
 
-\item{window}{An integer specifying the window size (in base pairs) for sliding analysis. Default is 100.}
+\item{window}{An integer specifying the window size (in base pairs) for the
+sliding analysis. Default is 100.}
 
-\item{gc_threshold}{A numeric value representing the threshold for GC content to classify a window as a potential CpG island. Default is 0.5.}
+\item{gc_threshold}{A numeric value representing the threshold for GC content
+to classify a window as a potential CpG island. Default is 0.5.}
 
-\item{cpg_threshold}{A numeric value representing the threshold for the observed-to-expected CpG ratio to classify a window as a CpG island. Default is 0.6.}
+\item{cpg_threshold}{A numeric value representing the threshold for the
+observed-to-expected CpG ratio to classify a window as a candidate CpG
+island. Default is 0.6.}
+
+\item{min_length}{An integer specifying the minimum length (in base pairs) a
+merged island must have to be reported. Standard is 200 bp. Default is 200.}
+
+\item{return_type}{A character string, one of \code{"plot"} (default),
+\code{"table"}, or \code{"list"}. See \strong{Value}.}
 }
 \value{
-A ggplot object visualizing the GC content and CpG islands across the sequences. The plot will show lines for GC content with shaded regions indicating the detected CpG islands.
+For \code{detect_cpg_islands()}: depending on \code{return_type},
+either a ggplot object visualizing the GC content and detected CpG islands
+("plot"), a data.frame of detected islands ("table"), or a list containing
+both ("list"). The plot shows lines for GC content with shaded regions
+indicating the detected (merged, length-filtered) CpG islands.
+
+For \code{cpg_islands()}: a data.frame with one row per detected
+island and columns \code{header}, \code{start}, \code{end},
+\code{length}, and \code{mean_gc}.
 }
 \description{
-This function identifies CpG islands in a set of DNA sequences by calculating the observed-to-expected CpG ratio and GC content within sliding windows. A CpG island is defined based on a threshold for both the GC content and the CpG ratio.
+These functions identify CpG islands in a set of DNA sequences by calculating
+the observed-to-expected CpG ratio and GC content within sliding windows. A
+window is flagged as a CpG island candidate when both its GC content and its
+observed-to-expected CpG ratio meet user-supplied thresholds. Consecutive
+(adjacent or overlapping) positive windows are then merged into a single
+continuous island, and only islands whose merged length is at least
+\code{min_length} base pairs are reported.
 }
 \examples{
 # Example usage:
 sequences_df <- data.frame(
- headers = c("seq1", "seq2"),
- sequences = c("ATCGCGATCGCGATCG", "CGATCGCGATCG"),
- stringsAsFactors = FALSE
+  headers = c("seq1", "seq2"),
+  sequences = c("ATCGCGATCGCGATCG", "CGATCGCGATCG"),
+  stringsAsFactors = FALSE
 )
 
 # Plot CpG islands
 detect_cpg_islands(sequences_df, window = 10, gc_threshold = 0.4, cpg_threshold = 0.5)
+
+# Get the detected islands as a data.frame
+cpg_islands(sequences_df, window = 10, gc_threshold = 0.4, cpg_threshold = 0.5)
 
 }

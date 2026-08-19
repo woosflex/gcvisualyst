@@ -2,27 +2,37 @@
 
 # Helper functions for read_fasta() main function
 
-read_sequences <-function(path) {
+read_sequences <- function(path) {
   if (is.na(path)) {
     stop("Fasta file path not provided.")
   }
   file <- readr::read_file(path)
-  file <- file |>
-    stringr::str_trim() |>
-    stringr::str_split_1(">")
-  file <- file[file != ""]
-  sequence_df <- data.frame(Header = character(),
-                            Sequence = character(),
-                            stringsAsFactors = FALSE
-  )
-  for (seq in file) {
-    header_and_seq <- unlist(stringr::str_split(seq, "\n"), 2)
-    header <- unlist(stringr::str_split(header_and_seq[1], ":"))[1]
-    sequence <- stringr::str_to_upper(stringr::str_squish(header_and_seq[2]))
-    sequence_df <- rbind(sequence_df, list(header, sequence))
+
+  # Split the file into records on the ">" marker, discarding any leading
+  # text (everything before the first ">" is ignored).
+  records <- stringr::str_split_1(file, ">")
+  records <- records[records != ""]
+
+  headers <- character(length(records))
+  sequences <- character(length(records))
+
+  for (i in seq_along(records)) {
+    lines <- stringr::str_split_1(records[i], "\n")
+    # Header is the first line of the record, trimmed (preserving ':' and spaces).
+    headers[i] <- stringr::str_trim(lines[1])
+    # Sequence is the concatenation of all remaining lines with ALL whitespace
+    # removed. This correctly reassembles multi-line FASTA (two or more lines of
+    # sequence) without inserting spaces/garbage between fragments.
+    if (length(lines) > 1) {
+      seq_raw <- paste(lines[-1], collapse = "")
+      sequences[i] <- stringr::str_remove_all(seq_raw, "\\s")
+    } else {
+      sequences[i] <- ""
+    }
+    sequences[i] <- stringr::str_to_upper(sequences[i])
   }
-  colnames(sequence_df) <- c("headers", "sequences")
-  return(sequence_df)
+
+  return(data.frame(headers = headers, sequences = sequences, stringsAsFactors = FALSE))
 }
 
 validate_sequences <- function(sequences) {
