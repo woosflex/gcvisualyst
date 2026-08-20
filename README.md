@@ -191,3 +191,15 @@ buttons for the island results. Errors (such as a window larger than a
 sequence) are surfaced as messages instead of crashing the app. The
 bundled app ships inside the package and is resolved via
 `system.file("shiny", package = "gcvisualyst")`.
+
+## Run the Shiny app with Docker
+
+Self-host the bundled Shiny app:
+
+```bash
+docker build -t gcvisualyst -f docker/Dockerfile .
+docker run -d --name gcvisualyst-app -p 3838:3838 gcvisualyst
+# open http://localhost:3838/gcvisualyst/
+```
+
+Or with Compose: `docker compose -f docker/docker-compose.yml up -d`.

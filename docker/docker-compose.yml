@@ -1,0 +1,8 @@
+services:
+  gcvisualyst:
+    build: .
+    image: gcvisualyst:latest
+    container_name: gcvisualyst-app
+    ports:
+      - "3838:3838"
+    restart: unless-stopped

@@ -150,3 +150,15 @@ run_app(port = 3838, launch.browser = TRUE)
 ```
 
 The extended app adds controls for the CpG island thresholds (`gc_threshold`, `cpg_threshold`, `min_length`) and a shared window size, shows GC content and GC skew side by side in tabs, displays the detected islands in a summary table, and includes CSV and BED download buttons for the island results. Errors (such as a window larger than a sequence) are surfaced as messages instead of crashing the app. The bundled app ships inside the package and is resolved via `system.file("shiny", package = "gcvisualyst")`.
+
+## Run the Shiny app with Docker
+
+Self-host the bundled Shiny app:
+
+```bash
+docker build -t gcvisualyst -f docker/Dockerfile .
+docker run -d --name gcvisualyst-app -p 3838:3838 gcvisualyst
+# open http://localhost:3838/gcvisualyst/
+```
+
+Or with Compose: `docker compose -f docker/docker-compose.yml up -d`.
