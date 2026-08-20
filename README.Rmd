@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
+**Live demo:** [gcvisualyst on shinyapps.io](https://cvf8tb-adnan0raza.shinyapps.io/gcvisualyst/) — try the interactive app (GC content, GC skew, CpG islands, CSV/BED export) in your browser.
+
 The goal of gcvisualyst is to analyze and visualize the GC content of DNA sequences across sliding windows and detect CpG islands within these sequences. This tool provides a simple and effective way to calculate GC content, compute GC skew, identify CpG islands, and generate informative plots illustrating variations in GC content and CpG islands. It also ships an interactive Shiny web application.
 
 Features:

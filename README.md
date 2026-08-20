@@ -7,6 +7,11 @@
 
 <!-- badges: end -->
 
+**Live demo:** [gcvisualyst on
+shinyapps.io](https://cvf8tb-adnan0raza.shinyapps.io/gcvisualyst/) — try
+the interactive app (GC content, GC skew, CpG islands, CSV/BED export)
+in your browser.
+
 The goal of gcvisualyst is to analyze and visualize the GC content of
 DNA sequences across sliding windows and detect CpG islands within these
 sequences. This tool provides a simple and effective way to calculate GC
@@ -196,7 +201,7 @@ bundled app ships inside the package and is resolved via
 
 Self-host the bundled Shiny app:
 
-```bash
+``` bash
 docker build -t gcvisualyst -f docker/Dockerfile .
 docker run -d --name gcvisualyst-app -p 3838:3838 gcvisualyst
 # open http://localhost:3838/gcvisualyst/
